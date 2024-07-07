@@ -49,10 +49,11 @@ int main(int argc, char **argv) {
   
   std::cout << "Waiting for a client to connect...\n";
   
-  accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
+  int client_fd = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
   std::cout << "Client connected\n";
 
-  HTTP/1.1 200 OK \r\n\r\n;
+  std::string messageBack = "HTTP/1.1 200 OK \r\n\r\n";
+  send(client_fd, messageBack.c_str(), messageBack.length(), 0);
   
   close(server_fd);
 

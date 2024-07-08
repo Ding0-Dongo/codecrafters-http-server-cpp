@@ -58,10 +58,10 @@ int main(int argc, char **argv) {
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
   if(incomingMessage.starts_with("GET / HTTP/1.1\r\n")){
-    send(client_fd, OkMessage.c_str(), messageBack.length(), 0);
+    send(client_fd, OkMessage.c_str(), OkMessage.length(), 0);
   }
   else{
-    send(client_fd, errMessage.c_str(), messageBack.length(), 0);
+    send(client_fd, errMessage.c_str(), errMessage.length(), 0);
   }
 
   close(server_fd);

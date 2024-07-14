@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
     int startOfStr = incomingMessage.find("User-Agent: ") + 12;
     int endOfStr = incomingMessage.find("Accept: ");
     contentStr = incomingMessage.substr(startOfStr, endOfStr - 64);
-    cout << contentStr;
+    std::cout << contentStr;
   }
   else if(incomingMessage.starts_with("GET /echo/")){
     int endOfStr = incomingMessage.find("HTTP/1.1");

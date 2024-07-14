@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
   if(incomingMessage.starts_with("GET /echo/")){
     int endOfStr = incomingMessage.find_first_of(" ");
     contentStr = incomingMessage.substr(9, endOfStr - 9);
-    std::string message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + std::to_string(contentStr.size()) + "\r\n\r\n"+ contentStr};
+    std::string message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + std::to_string(contentStr.size()) + "\r\n\r\n"+ contentStr;
     send(client_fd, message.c_str(), message.length(), 0);
   }
 

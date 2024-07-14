@@ -59,14 +59,19 @@ int main(int argc, char **argv) {
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
-  if(incomingMessage.starts_with("GET /echo/")){
+  if(incomingMessage.starts_with("GET /user-agent HTTP/1.1\r\n")){
+    int startOfStr = incomingMessage.find("User-Agent: ") + 12;
+    int endOfStr = incomingMessage.find("Accept: ");
+    contentStr = incomingMessage.substr(startOfStr, endOfStr - 64);
+    cout << contentStr;
+  }
+  else if(incomingMessage.starts_with("GET /echo/")){
     int endOfStr = incomingMessage.find("HTTP/1.1");
     contentStr = incomingMessage.substr(10, endOfStr - 11);
     std::string message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + std::to_string(contentStr.size()) + "\r\n\r\n"+ contentStr;
     send(client_fd, message.c_str(), message.length(), 0);
   }
-
-  if(incomingMessage.starts_with("GET / HTTP/1.1\r\n")){
+  else if(incomingMessage.starts_with("GET / HTTP/1.1\r\n")){
     send(client_fd, OkMessage.c_str(), OkMessage.length(), 0);
   }
   else{

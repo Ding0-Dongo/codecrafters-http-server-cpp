@@ -53,10 +53,19 @@ int main(int argc, char **argv) {
   std::cout << "Client connected\n";
 
   std::string incomingMessage(1024, '\0');
+  std::string contentStr(1024, '\0');
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
   std::string errMessage = "HTTP/1.1 404 Not Found\r\n\r\n";
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
+
+  if(incomingMessage.starts_with("GET /echo/")){
+    int endOfStr = incomingMessage.find_first_of(" ");
+    contentStr = incomingMessage.substr(9, endOfStr - 9);
+    std::string message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {contentStr.size()}\r\n\r\n{contentStr}";
+    send(client_fd, message.c_str(), message.length(), 0);
+  }
+
   if(incomingMessage.starts_with("GET / HTTP/1.1\r\n")){
     send(client_fd, OkMessage.c_str(), OkMessage.length(), 0);
   }

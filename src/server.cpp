@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
   std::cout << "Client connected\n";
 
   std::string incomingMessage(1024, '\0');
-  std::string contentStr(1024, '\0');
+  std::string contentStr = "";
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
   std::string errMessage = "HTTP/1.1 404 Not Found\r\n\r\n";
 

@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
 
   if(incomingMessage.starts_with("GET /user-agent HTTP/1.1\r\n")){
     int startOfStr = incomingMessage.find("User-Agent: ") + 12;
-    int endOfStr = incomingMessage.find("Accept:");
+    std::cout << "Incoming message:" << incomingMessage << "\n\n";
     std:: cout << std::to_string(startOfStr) << " " << std::to_string(endOfStr);
     contentStr = incomingMessage.substr(startOfStr, endOfStr - 64);
     std::cout << contentStr << "\n" << std::to_string(contentStr.size());

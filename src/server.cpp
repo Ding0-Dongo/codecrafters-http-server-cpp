@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
     int startOfStr = incomingMessage.find("User-Agent: ") + 12;
     int endofStr = incomingMessage.find("\r\n", startOfStr);
     std::cout << "End of str:" << std::to_string(endOfStr) << "\n";
-    contentStr = incomingMesage.substr(startOfStr, endOfStr - startOfStr);
+    contentStr = incomingMessage.substr(startOfStr, endOfStr - startOfStr);
     std::cout << "Content string: " << contentStr << "\n" << std::to_string(contentStr.size());
     std::string message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + std::to_string(contentStr.size()) + "\r\n\r\n"+ contentStr;
     send(client_fd, message.c_str(), message.length(), 0);

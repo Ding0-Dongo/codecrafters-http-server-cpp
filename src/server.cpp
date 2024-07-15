@@ -64,6 +64,7 @@ int main(int argc, char **argv) {
     std::cout << "Incoming message:" << incomingMessage << "   end of message\n\n";
     std::string tempStr = incomingMessage.substr(startOfStr);
     int endOfStr = incomingMessage.find(" ");
+    std::cout << "End of str:" << std::to_string(endOfStr);
     contentStr = incomingMessage.substr(0, endOfStr);
     std::cout << "Content string: " << contentStr << "\n" << std::to_string(contentStr.size());
     std::string message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: " + std::to_string(contentStr.size()) + "\r\n\r\n"+ contentStr;

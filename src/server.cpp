@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
     std::cout << "Incoming message:" << incomingMessage << "   end of message\n\n";
     std::string tempStr = incomingMessage.substr(startOfStr);
     std::cout << "tep strin" << tempStr << "\n";
-    int endOfStr = incomingMessage.find(" ");
+    int endOfStr = tempStr.find(" ");
     std::cout << "End of str:" << std::to_string(endOfStr) << "\n";
     contentStr = tempStr.substr(0, endOfStr);
     std::cout << "Content string: " << contentStr << "\n" << std::to_string(contentStr.size());

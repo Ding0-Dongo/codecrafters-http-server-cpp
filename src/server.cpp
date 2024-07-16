@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <thread>
+#include <fstream>
 
 void http_request(int client_fd){
   std::string incomingMessage(1024, '\0');
@@ -17,7 +18,10 @@ void http_request(int client_fd){
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
-  if(incomingMessage.starts_with("GET /user-agent HTTP/1.1\r\n")){
+  if(incomingMessage.starts_with("GET /file/")){
+    std::cout << "New message: " <<incomingMessage;
+  }
+  else if(incomingMessage.starts_with("GET /user-agent HTTP/1.1\r\n")){
     int startOfStr = incomingMessage.find("User-Agent: ") + 12;
     int endOfStr = incomingMessage.find("\r\n", startOfStr);
     contentStr = incomingMessage.substr(startOfStr, endOfStr - startOfStr);

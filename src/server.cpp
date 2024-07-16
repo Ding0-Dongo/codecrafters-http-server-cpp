@@ -18,7 +18,7 @@ void http_request(int client_fd){
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
-  if(incomingMessage.starts_with("GET /file/")){
+  if(incomingMessage.starts_with("GET /files/")){
     std::cout << "New message: " <<incomingMessage;
   }
   else if(incomingMessage.starts_with("GET /user-agent HTTP/1.1\r\n")){

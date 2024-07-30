@@ -19,6 +19,8 @@ void http_request(int client_fd, std::string dir){
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
+  std::cout << incomingMessage;
+  std::cout << "  end";
   if(incomingMessage.starts_with("GET /files/")){
     auto tempPath = incomingMessage.substr(11);
     std::string path = tempPath.substr(0, tempPath.find(" "));

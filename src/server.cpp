@@ -23,6 +23,7 @@ void http_request(int client_fd){
   if(incomingMessage.starts_with("GET /files/")){
     std::cout << "Get files \n";
     auto path = incomingMessage.substr(11);
+    std::cout << path;
     std::ifstream file(path, std::ios::binary);
     if (file.is_open()) {
       std::cout << "Open file \n";

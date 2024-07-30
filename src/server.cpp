@@ -11,12 +11,7 @@
 #include <thread>
 #include <fstream>
 
-void http_request(int client_fd){
-  std::string dir;
-  if (argc == 3 && strcmp(argv[1], "--directory") == 0)
-  {
-  	dir = argv[2];
-  }
+void http_request(int client_fd, std::string dir){
   std::string incomingMessage(1024, '\0');
   std::string contentStr = "";
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
@@ -99,6 +94,12 @@ int main(int argc, char **argv) {
   
   struct sockaddr_in client_addr;
   int client_addr_len = sizeof(client_addr);
+
+  std::string dir;
+  if (argc == 3 && strcmp(argv[1], "--directory") == 0)
+  {
+  	dir = argv[2];
+  }
   
   std::cout << "Waiting for a client to connect...\n";
 
@@ -106,7 +107,7 @@ int main(int argc, char **argv) {
   while(true){
     int client_fd = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
     std::cout << "Client connected\n";
-    std::thread clientThread(http_request, client_fd);
+    std::thread clientThread(http_request, client_fd, dir);
     clientThread.detach();
   }
 

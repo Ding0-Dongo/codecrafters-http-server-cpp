@@ -21,14 +21,14 @@ void http_request(int client_fd){
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
   if(incomingMessage.starts_with("GET /files/")){
-    cout << "Get files \n";
+    std::cout << "Get files \n";
     auto path = incomingMessage.substr(11);
     std::ifstream file(path, std::ios::binary);
     if (file.is_open()) {
-      cout << "Open file \n";
-      std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent Length: "
+      std::cout << "Open file \n";
+      std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent Length: ";
       fileContent.insert(fileContent.end(), std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-      cout << fileContent;
+      std::cout << fileContent;
     } else {
       send(client_fd, errMessage.c_str(), errMessage.length(), 0);;
     }

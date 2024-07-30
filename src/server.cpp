@@ -12,6 +12,11 @@
 #include <fstream>
 
 void http_request(int client_fd){
+  std::string dir;
+  if (argc == 3 && strcmp(argv[1], "--directory") == 0)
+  {
+  	dir = argv[2];
+  }
   std::string incomingMessage(1024, '\0');
   std::string contentStr = "";
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
@@ -27,7 +32,7 @@ void http_request(int client_fd){
       std::cout << "Open file \n";
       std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent Length: ";
       std::stringstream fileContent;
-      content << file.rdbuf();
+      fileContent << file.rdbuf();
       std::stringstream respond("");
       fileMessage = fileMessage + std::to_string(content.str().length()) + "\r\n\r\n" + content.str() + "\r\n";
       std::cout << fileMessage;
@@ -94,12 +99,6 @@ int main(int argc, char **argv) {
   
   struct sockaddr_in client_addr;
   int client_addr_len = sizeof(client_addr);
-
-  std::string dir;
-  if (argc == 3 && strcmp(argv[1], "--directory") == 0)
-  {
-  	dir = argv[2];
-  }
   
   std::cout << "Waiting for a client to connect...\n";
 

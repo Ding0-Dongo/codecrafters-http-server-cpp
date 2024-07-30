@@ -29,6 +29,7 @@ void http_request(int client_fd, std::string dir){
       fileContent << file.rdbuf();
       std::stringstream respond("");
       fileMessage = fileMessage + std::to_string(fileContent.str().length()) + "\r\n\r\n" + fileContent.str() + "\r\n";
+      std::cout << fileMessage;
       send(client_fd, fileMessage.c_str(), fileMessage.length(), 0);;
     } else{
       std::cout << "error encountered";

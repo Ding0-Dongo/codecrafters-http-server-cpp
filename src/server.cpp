@@ -24,12 +24,11 @@ void http_request(int client_fd, std::string dir){
     std::string path = tempPath.substr(0, tempPath.find(" "));
     std::ifstream file(dir + path);
     if (file.good()) {
-      std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent Length: ";
+      std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ";
       std::stringstream fileContent;
       fileContent << file.rdbuf();
       std::stringstream respond("");
       fileMessage = fileMessage + std::to_string(fileContent.str().length()) + "\r\n\r\n" + fileContent.str() + "\r\n";
-      std::cout << fileMessage;
       send(client_fd, fileMessage.c_str(), fileMessage.length(), 0);;
     } else{
       std::cout << "error encountered";

@@ -19,11 +19,11 @@ void http_request(int client_fd, std::string dir){
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
-  cout << incomingMessage + "\n";
-
   if(incomingMessage.starts_with("GET /files/")){
     std::cout << "Get files \n";
-    auto path = incomingMessage.substr(11);
+    auto tempPath = incomingMessage.substr(11);
+    std::string path = tempPath.substr(0, tempPath.find(" "));
+    std::cout << path + "\n";
     std::cout << dir + path;
     std::ifstream file(dir + path);
     if (file.good()) {

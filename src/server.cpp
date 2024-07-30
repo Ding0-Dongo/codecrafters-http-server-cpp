@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <fstream>
 #include <thread>
 #include <fstream>
 
@@ -14,12 +15,23 @@ void http_request(int client_fd){
   std::string incomingMessage(1024, '\0');
   std::string contentStr = "";
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
+  std::string fileContent = "";
   std::string errMessage = "HTTP/1.1 404 Not Found\r\n\r\n";
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
   if(incomingMessage.starts_with("GET /files/")){
-    std::cout << "New message: " <<incomingMessage;
+    cout << "Get files \n";
+    auto path = incomingMessage.substr(11);
+    std::ifstream file(path, std::ios::binary);
+    if (file.is_open()) {
+      cout << "Open file \n";
+      std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent Length: "
+      fileContent.insert(fileContent.end(), std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+      cout << fileContent;
+    } else {
+      send(client_fd, errMessage.c_str(), errMessage.length(), 0);;
+    }
   }
   else if(incomingMessage.starts_with("GET /user-agent HTTP/1.1\r\n")){
     int startOfStr = incomingMessage.find("User-Agent: ") + 12;
@@ -80,6 +92,13 @@ int main(int argc, char **argv) {
   
   struct sockaddr_in client_addr;
   int client_addr_len = sizeof(client_addr);
+
+  for (int i = 0; i < argc; ++i) {
+    using namespace std::string_view_literals;
+    if (argv[i] == "--directory"sv && i < argc - 1) {
+      chdir(argv[i + 1]);
+    }
+  }
   
   std::cout << "Waiting for a client to connect...\n";
 

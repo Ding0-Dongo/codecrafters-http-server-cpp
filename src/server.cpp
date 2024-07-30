@@ -23,14 +23,6 @@ void http_request(int client_fd){
     std::cout << "Get files \n";
     auto path = incomingMessage.substr(11);
     std::ifstream file(dir + path);
-
-        content << ifs.rdbuf();
-        std::stringstream respond("");
-        http_response = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + std::to_string(content.str().length()) + "\r\n\r\n" + content.str() + "\r\n";
-      }
-
-
-
     if (file.good()) {
       std::cout << "Open file \n";
       std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent Length: ";
@@ -39,7 +31,7 @@ void http_request(int client_fd){
       std::stringstream respond("");
       fileMessage = fileMessage + std::to_string(content.str().length()) + "\r\n\r\n" + content.str() + "\r\n";
       std::cout << fileMessage;
-    } else {
+    }else {
       send(client_fd, errMessage.c_str(), errMessage.length(), 0);;
     }
   }

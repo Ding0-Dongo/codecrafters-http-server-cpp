@@ -29,7 +29,7 @@ void http_request(int client_fd, std::string dir){
       std::stringstream fileContent;
       fileContent << file.rdbuf();
       std::stringstream respond("");
-      fileMessage = fileMessage + std::to_string(content.str().length()) + "\r\n\r\n" + content.str() + "\r\n";
+      fileMessage = fileMessage + std::to_string(fileContent.str().length()) + "\r\n\r\n" + fileContent.str() + "\r\n";
       std::cout << fileMessage;
     }else {
       send(client_fd, errMessage.c_str(), errMessage.length(), 0);;

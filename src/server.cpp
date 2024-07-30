@@ -15,7 +15,6 @@ void http_request(int client_fd){
   std::string incomingMessage(1024, '\0');
   std::string contentStr = "";
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
-  std::string fileContent = "";
   std::string errMessage = "HTTP/1.1 404 Not Found\r\n\r\n";
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
@@ -23,13 +22,23 @@ void http_request(int client_fd){
   if(incomingMessage.starts_with("GET /files/")){
     std::cout << "Get files \n";
     auto path = incomingMessage.substr(11);
-    std::cout << "Path\n:" + path;
-    std::ifstream file(path, std::ios::binary);
-    if (file.is_open()) {
+    std::ifstream file(dir + path);
+
+        content << ifs.rdbuf();
+        std::stringstream respond("");
+        http_response = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: " + std::to_string(content.str().length()) + "\r\n\r\n" + content.str() + "\r\n";
+      }
+
+
+
+    if (file.good()) {
       std::cout << "Open file \n";
       std::string fileMessage = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent Length: ";
-      fileContent.insert(fileContent.end(), std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-      std::cout << fileContent;
+      std::stringstream fileContent;
+      content << file.rdbuf();
+      std::stringstream respond("");
+      fileMessage = fileMessage + std::to_string(content.str().length()) + "\r\n\r\n" + content.str() + "\r\n";
+      std::cout << fileMessage;
     } else {
       send(client_fd, errMessage.c_str(), errMessage.length(), 0);;
     }
@@ -94,11 +103,10 @@ int main(int argc, char **argv) {
   struct sockaddr_in client_addr;
   int client_addr_len = sizeof(client_addr);
 
-  for (int i = 0; i < argc; ++i) {
-    using namespace std::string_view_literals;
-    if (argv[i] == "--directory"sv && i < argc - 1) {
-      chdir(argv[i + 1]);
-    }
+  std::string dir;
+  if (argc == 3 && strcmp(argv[1], "--directory") == 0)
+  {
+  	dir = argv[2];
   }
   
   std::cout << "Waiting for a client to connect...\n";

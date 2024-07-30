@@ -8,8 +8,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <fstream>
+#include <sstream>
 #include <thread>
-#include <fstream>
 
 void http_request(int client_fd, std::string dir){
   std::string incomingMessage(1024, '\0');

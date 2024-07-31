@@ -12,7 +12,7 @@
 #include <thread>
 
 void http_request(int client_fd, std::string dir){
-  std::string incomingMessage(1024, '\0');
+  std::string incomingMessage;
   std::string contentStr = "";
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
   std::string errMessage = "HTTP/1.1 404 Not Found\r\n\r\n";

@@ -25,7 +25,7 @@ void http_request(int client_fd, std::string dir){
     auto tempPath = incomingMessage.substr(11);
     std::string path = tempPath.substr(0, tempPath.find(" "));
     std::ofstream outputFile(dir + path);
-    fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n"), fileMessage.end() - 4);
+    std::string fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n"), fileMessage.end() - 4);
     std::cout << fileMessage;
   }
   else if(incomingMessage.starts_with("GET /files/")){

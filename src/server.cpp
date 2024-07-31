@@ -20,8 +20,15 @@ void http_request(int client_fd, std::string dir){
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
   std::cout << incomingMessage;
-  std::cout << "  end";
-  if(incomingMessage.starts_with("GET /files/")){
+  std::cout << "\n";
+  if(incomingMessage.starts_with("POST /files/")){
+    auto tempPath = incomingMessage.substr(11);
+    std::string path = tempPath.substr(0, tempPath.find(" "));
+    std::ofstream outputFile(dir + path);
+    fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n"), fileMessage.end() - 4);
+    std::cout << fileMessage;
+  }
+  else if(incomingMessage.starts_with("GET /files/")){
     auto tempPath = incomingMessage.substr(11);
     std::string path = tempPath.substr(0, tempPath.find(" "));
     std::ifstream file(dir + path);

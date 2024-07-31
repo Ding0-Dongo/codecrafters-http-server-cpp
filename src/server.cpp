@@ -19,7 +19,7 @@ void http_request(int client_fd, std::string dir){
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
-  std::cout << incomingMessage.substr(incomingMessage.find("Content-Length:") + 15, 2);
+  std::cout << incomingMessage.substr(incomingMessage.find("Content-Length:") + 16, 2);
   std::cout << "\n";
   if(incomingMessage.starts_with("POST /files/")){
     auto tempPath = incomingMessage.substr(11);

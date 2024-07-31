@@ -12,20 +12,20 @@
 #include <thread>
 
 void http_request(int client_fd, std::string dir){
-  std::string incomingMessage;
+  std::string incomingMessage(1024, '\0');
   std::string contentStr = "";
   std::string OkMessage = "HTTP/1.1 200 OK\r\n\r\n";
   std::string errMessage = "HTTP/1.1 404 Not Found\r\n\r\n";
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
-  std::cout << "\n" + incomingMessage;
+  std::cout << incomingMessage.substr(incomingMessage.find("Content-Length:") + 15, 2);
   std::cout << "\n";
   if(incomingMessage.starts_with("POST /files/")){
     auto tempPath = incomingMessage.substr(11);
     std::string path = tempPath.substr(0, tempPath.find(" "));
     std::ofstream outputFile(dir + path);
-    std::string fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n") + 4, incomingMessage.find("\x00") - (incomingMessage.find("\r\n\r\n") + 4));
+    std::string fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n") + 4, messageSize);
     outputFile << fileMessage;
     outputFile.close();
     std::string postMessage = "HTTP/1.1 201 Created\r\n\r\n";

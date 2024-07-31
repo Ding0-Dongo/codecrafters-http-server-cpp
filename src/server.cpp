@@ -25,7 +25,7 @@ void http_request(int client_fd, std::string dir){
     auto tempPath = incomingMessage.substr(11);
     std::string path = tempPath.substr(0, tempPath.find(" "));
     std::ofstream outputFile(dir + path);
-    std::string fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n"), fileMessage.length() - 4);
+    std::string fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n") + 4, fileMessage.find_last_of("\r\n"));
     outputFile << fileMessage;
     outputFile.close();
     std::string postMessage = "HTTP/1.1 201 Created\r\n\r\n";

@@ -19,13 +19,14 @@ void http_request(int client_fd, std::string dir){
 
   recv(client_fd, (void *)&incomingMessage[0], incomingMessage.max_size(), 0);
 
-  std::cout << incomingMessage.substr(incomingMessage.find("Content-Length:") + 16, 2);
+  std::cout << incomingMessage;
   std::cout << "\n";
   if(incomingMessage.starts_with("POST /files/")){
     auto tempPath = incomingMessage.substr(11);
     std::string path = tempPath.substr(0, tempPath.find(" "));
     std::ofstream outputFile(dir + path);
-    std::string fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n") + 4);
+    int messageSize = stoi(incomingMessage.substr(incomingMessage.find("Content-Length:") + 16, 2));
+    std::string fileMessage = incomingMessage.substr(incomingMessage.find("\r\n\r\n") + 4, messageSize);
     outputFile << fileMessage;
     outputFile.close();
     std::string postMessage = "HTTP/1.1 201 Created\r\n\r\n";
